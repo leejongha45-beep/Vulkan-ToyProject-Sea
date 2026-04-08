@@ -1,12 +1,21 @@
-﻿// Vulkan_ToyProject_Sea.cpp : 애플리케이션의 진입점을 정의합니다.
-//
-
-#include "Vulkan_ToyProject_Sea.h"
+﻿#include "Vulkan_ToyProject_Sea.h"
+#include "src/core/SeaEngine.h"
 
 using namespace std;
 
 int main()
 {
-	cout << "Hello CMake." << endl;
-	return 0;
+	try
+	{
+		SeaEngine engine;
+		engine.run();
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
+
+		return EXIT_FAILURE;
+	}
+
+	return EXIT_SUCCESS;
 }

@@ -57,6 +57,11 @@ target_link_libraries(Vulkan_ToyProject_Sea PRIVATE
 
 set_property(TARGET Vulkan_ToyProject_Sea PROPERTY CXX_STANDARD 20)
 
+# PCH (precompiled header) 활성화
+target_precompile_headers(Vulkan_ToyProject_Sea PRIVATE
+    "${CMAKE_CURRENT_LIST_DIR}/Vulkan_ToyProject_Sea.h"
+)
+
 # Slang 셰이더 컴파일
 find_program(SLANGC_EXECUTABLE slangc HINTS "$ENV{VULKAN_SDK}/bin")
 

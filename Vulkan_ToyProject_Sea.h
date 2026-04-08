@@ -26,6 +26,9 @@ import vulkan_hpp;
 #endif
 #include <vulkan/vulkan.hpp>
 
+#include <memory>
+#include <vector>
+
 #define ENSURE(expr)                                                                                                   \
 	(                                                                                                                  \
 		[&]() -> bool                                                                                                  \
