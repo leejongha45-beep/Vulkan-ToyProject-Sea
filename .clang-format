@@ -32,5 +32,19 @@ BreakBeforeBraces: Custom
 
 AlignAfterOpenBracket: AlwaysBreak
 
+# C++11 braced init list / designated initializer 스타일
+# - 변수명 바로 뒤에 `{` (공백 없음)
+# - 마지막 값 뒤에 `};` 같은 줄
+# - 중괄호 안쪽 공백 없음
+Cpp11BracedListStyle: true
+SpaceBeforeCpp11BracedList: false
+
+# `,` 단위로 줄바꿈 — 한 항목이라도 멀티라인이면 전부 한 줄씩
+BinPackArguments: false
+BinPackParameters: false
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+ExperimentalAutoDetectBinPacking: false
+
 SortIncludes: CaseSensitive
 IncludeBlocks: Preserve

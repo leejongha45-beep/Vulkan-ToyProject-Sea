@@ -26,6 +26,7 @@ import vulkan_hpp;
 #endif
 #include <vulkan/vulkan.hpp>
 
+#include <array>
 #include <memory>
 #include <vector>
 

@@ -13,21 +13,15 @@ SeaRenderCore::~SeaRenderCore()
 
 void SeaRenderCore::initialize()
 {
-	if (!instanceInst)
-	{
-		instanceInst = std::make_unique<Instance>();
-		if (ENSURE(instanceInst))
-		{
-			vulkanClasses.emplace_back(instanceInst.get());
-		}
-	}
+	instanceInst = std::make_unique<Instance>();
 
-	for (auto* vulkanclass : vulkanClasses)
-	{
-		if (!ENSURE(vulkanclass))
-			return;
+	if (!ENSURE(instanceInst))
+		throw std::runtime_error("Cannot make Instance");
 
-		vulkanclass->create();
+	{
+		IRenderClass* vulkanObject = instanceInst.get();
+		vulkanObject->create();
+		vulkanClasses.emplace_back(vulkanObject);
 	}
 }
 
