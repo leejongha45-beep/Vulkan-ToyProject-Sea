@@ -35,7 +35,7 @@ void SeaEngine::initialize()
 		renderCoreInst = std::make_unique<SeaRenderCore>();
 		if (ENSURE(renderCoreInst))
 		{
-			renderCoreInst->initialize();
+			renderCoreInst->initialize(window);
 		}
 	}
 }

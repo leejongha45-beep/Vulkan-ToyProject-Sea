@@ -108,12 +108,54 @@ void Instance::create()
 	}
 
 	instanceInst = vk::raii::Instance(contextInst, createInfo);
+
+	// 디버그 메신저 생성
+	if constexpr (enableValidationLayers)
+	{
+		createDebugMessenger();
+	}
 }
 
 void Instance::destroy()
 {
+	if constexpr (enableValidationLayers)
+	{
+		if (*debugMessengerInst != VK_NULL_HANDLE)
+			debugMessengerInst.clear();
+	}
+
 	if (*instanceInst != VK_NULL_HANDLE)
 		instanceInst.clear();
+}
+
+VKAPI_ATTR vk::Bool32 VKAPI_CALL Instance::debugCallback(
+	vk::DebugUtilsMessageSeverityFlagBitsEXT       messageSeverity,
+	vk::DebugUtilsMessageTypeFlagsEXT              messageTypes,
+	const vk::DebugUtilsMessengerCallbackDataEXT*  pCallbackData,
+	void*                                          pUserData)
+{
+	if (messageSeverity >= vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning)
+	{
+		std::cerr << "[Vulkan Validation] " << pCallbackData->pMessage << std::endl;
+	}
+
+	return vk::False;
+}
+
+void Instance::createDebugMessenger()
+{
+	vk::DebugUtilsMessengerCreateInfoEXT createInfo{
+		.messageSeverity = vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose
+						 | vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning
+						 | vk::DebugUtilsMessageSeverityFlagBitsEXT::eError,
+		.messageType     = vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral
+					     | vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation
+					     | vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance,
+		.pfnUserCallback = &debugCallback,
+		.pUserData       = nullptr,
+	};
+
+	debugMessengerInst = vk::raii::DebugUtilsMessengerEXT(instanceInst, createInfo);
 }
 
 std::vector<const char*> Instance::getRequiredExtensions() const

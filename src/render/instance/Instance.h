@@ -34,9 +34,18 @@ private:
 	virtual void create() override;
 	virtual void destroy() override;
 
-	vk::raii::Context contextInst;
-	vk::raii::Instance instanceInst = nullptr;
+	vk::raii::Context                contextInst;
+	vk::raii::Instance               instanceInst       = nullptr;
+	vk::raii::DebugUtilsMessengerEXT debugMessengerInst = nullptr;
 
 private:
+	void createDebugMessenger();
+
+	static VKAPI_ATTR vk::Bool32 VKAPI_CALL debugCallback(
+		vk::DebugUtilsMessageSeverityFlagBitsEXT       messageSeverity,
+		vk::DebugUtilsMessageTypeFlagsEXT              messageTypes,
+		const vk::DebugUtilsMessengerCallbackDataEXT*  pCallbackData,
+		void*                                          pUserData);
+
 	std::vector<const char*> getRequiredExtensions() const;
 };

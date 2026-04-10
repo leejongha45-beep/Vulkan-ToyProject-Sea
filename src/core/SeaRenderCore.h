@@ -15,14 +15,17 @@ public:
 	SeaRenderCore& operator=(SeaRenderCore&&) = delete;
 
 public:
-	void initialize();
+	void initialize(GLFWwindow* window);
 	void update();
 
 private:
 	void release() noexcept;
 
 private:
-	std::unique_ptr<class Instance> instanceInst;
+	std::unique_ptr<class Instance>       instanceInst;
+	std::unique_ptr<class Surface>        surfaceInst;
+	std::unique_ptr<class PhysicalDevice> physicalDeviceInst;
+	std::unique_ptr<class Device>         deviceInst;
 
 	std::vector<class IRenderClass*> vulkanClasses;
 };
