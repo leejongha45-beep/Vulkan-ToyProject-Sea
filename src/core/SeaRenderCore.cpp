@@ -5,6 +5,11 @@
 #include "../render/surface/Surface.h"
 #include "../render/device/Device.h"
 #include "../render/swapchain/SwapChain.h"
+#include "../render/renderpass/RenderPass.h"
+#include "../render/descriptorsetlayout/DescriptorSetLayout.h"
+#include "../render/pipelinelayout/PipelineLayout.h"
+#include "../render/graphicspipeline/GraphicsPipeline.h"
+#include "../render/framebuffer/FrameBuffer.h"
 
 SeaRenderCore::SeaRenderCore() = default;
 
@@ -71,6 +76,66 @@ void SeaRenderCore::initialize(GLFWwindow* window)
 
 	{
 		IRenderClass* vulkanObject = swapChainInst.get();
+		vulkanObject->create();
+		vulkanClasses.emplace_back(vulkanObject);
+	}
+
+	// ===== 6. RenderPass (Device + SwapChain 의존) =====
+	renderPassInst = std::make_unique<RenderPass>(*deviceInst, *swapChainInst);
+
+	if (!ENSURE(renderPassInst))
+		throw std::runtime_error("[SeaRenderCore] Cannot make RenderPass");
+
+	{
+		IRenderClass* vulkanObject = renderPassInst.get();
+		vulkanObject->create();
+		vulkanClasses.emplace_back(vulkanObject);
+	}
+
+	// ===== 7. DescriptorSetLayout (Device 의존) =====
+	descriptorSetLayoutInst = std::make_unique<DescriptorSetLayout>(*deviceInst);
+
+	if (!ENSURE(descriptorSetLayoutInst))
+		throw std::runtime_error("[SeaRenderCore] Cannot make DescriptorSetLayout");
+
+	{
+		IRenderClass* vulkanObject = descriptorSetLayoutInst.get();
+		vulkanObject->create();
+		vulkanClasses.emplace_back(vulkanObject);
+	}
+
+	// ===== 8. PipelineLayout (Device + DescriptorSetLayout 의존) =====
+	pipelineLayoutInst = std::make_unique<PipelineLayout>(*deviceInst, *descriptorSetLayoutInst);
+
+	if (!ENSURE(pipelineLayoutInst))
+		throw std::runtime_error("[SeaRenderCore] Cannot make PipelineLayout");
+
+	{
+		IRenderClass* vulkanObject = pipelineLayoutInst.get();
+		vulkanObject->create();
+		vulkanClasses.emplace_back(vulkanObject);
+	}
+
+	// ===== 9. GraphicsPipeline (Device + RenderPass + PipelineLayout + SwapChain 의존) =====
+	graphicsPipelineInst = std::make_unique<GraphicsPipeline>(*deviceInst, *renderPassInst, *pipelineLayoutInst, *swapChainInst);
+
+	if (!ENSURE(graphicsPipelineInst))
+		throw std::runtime_error("[SeaRenderCore] Cannot make GraphicsPipeline");
+
+	{
+		IRenderClass* vulkanObject = graphicsPipelineInst.get();
+		vulkanObject->create();
+		vulkanClasses.emplace_back(vulkanObject);
+	}
+
+	// ===== 10. FrameBuffer (Device + SwapChain + RenderPass 의존) =====
+	frameBufferInst = std::make_unique<FrameBuffer>(*deviceInst, *physicalDeviceInst, *swapChainInst, *renderPassInst);
+
+	if (!ENSURE(frameBufferInst))
+		throw std::runtime_error("[SeaRenderCore] Cannot make FrameBuffer");
+
+	{
+		IRenderClass* vulkanObject = frameBufferInst.get();
 		vulkanObject->create();
 		vulkanClasses.emplace_back(vulkanObject);
 	}

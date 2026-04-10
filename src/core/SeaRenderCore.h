@@ -27,6 +27,11 @@ private:
 	std::unique_ptr<class PhysicalDevice> physicalDeviceInst;
 	std::unique_ptr<class Device>         deviceInst;
 	std::unique_ptr<class SwapChain>      swapChainInst;
+	std::unique_ptr<class RenderPass>            renderPassInst;
+	std::unique_ptr<class DescriptorSetLayout>   descriptorSetLayoutInst;
+	std::unique_ptr<class PipelineLayout>        pipelineLayoutInst;
+	std::unique_ptr<class GraphicsPipeline>      graphicsPipelineInst;
+	std::unique_ptr<class FrameBuffer>           frameBufferInst;
 
 	std::vector<class IRenderClass*> vulkanClasses;
 };

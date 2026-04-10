@@ -3,13 +3,10 @@
 #include "../../../Vulkan_ToyProject_Sea.h"
 #include "../IRenderClass.h"
 
-class PhysicalDevice;
-class Surface;
-
 class Device final : public IRenderClass
 {
 public:
-	explicit Device(const PhysicalDevice& physicalDeviceRef, const Surface& surfaceRef);
+	explicit Device(const class PhysicalDevice& physicalDeviceRef, const class Surface& surfaceRef);
 	virtual ~Device() = default;
 
 	Device()						 = delete;
@@ -41,8 +38,8 @@ private:
 	uint32_t findQueueFamilyIndex(const vk::raii::PhysicalDevice& physicalDevice, vk::QueueFlagBits queueFlag) const;
 	uint32_t findPresentQueueFamilyIndex(const vk::raii::PhysicalDevice& physicalDevice, const vk::raii::SurfaceKHR& surface) const;
 
-	const PhysicalDevice& physicalDeviceRef;
-	const Surface&        surfaceRef;
+	const class PhysicalDevice& physicalDeviceRef;
+	const class Surface&        surfaceRef;
 
 	vk::raii::Device deviceInst		  = nullptr;
 	vk::raii::Queue graphicsQueueInst = nullptr;

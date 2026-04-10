@@ -125,7 +125,10 @@ vk::Extent2D SwapChain::chooseExtent(const vk::SurfaceCapabilitiesKHR& capabilit
 
 	return {
 		std::clamp(static_cast<uint32_t>(width), capabilities.minImageExtent.width, capabilities.maxImageExtent.width),
-		std::clamp(static_cast<uint32_t>(height), capabilities.minImageExtent.height, capabilities.maxImageExtent.height),
+		std::clamp(
+			static_cast<uint32_t>(height),
+			capabilities.minImageExtent.height,
+			capabilities.maxImageExtent.height),
 	};
 }
 

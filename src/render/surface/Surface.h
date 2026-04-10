@@ -3,12 +3,10 @@
 #include "../../../Vulkan_ToyProject_Sea.h"
 #include "../IRenderClass.h"
 
-class Instance;
-
 class Surface final : public IRenderClass
 {
 public:
-	explicit Surface(const Instance& instanceRef, GLFWwindow* windowRef);
+	explicit Surface(const class Instance& instanceRef, GLFWwindow* windowRef);
 	virtual ~Surface() = default;
 
 	Surface()						   = delete;
@@ -27,7 +25,7 @@ private:
 	virtual void create() override;
 	virtual void destroy() override;
 
-	const Instance& instanceRef;
+	const class Instance& instanceRef;
 	GLFWwindow* windowRef = nullptr;
 
 	vk::raii::SurfaceKHR surfaceInst = nullptr;
