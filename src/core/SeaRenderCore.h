@@ -26,6 +26,7 @@ private:
 	std::unique_ptr<class Surface>        surfaceInst;
 	std::unique_ptr<class PhysicalDevice> physicalDeviceInst;
 	std::unique_ptr<class Device>         deviceInst;
+	std::unique_ptr<class SwapChain>      swapChainInst;
 
 	std::vector<class IRenderClass*> vulkanClasses;
 };

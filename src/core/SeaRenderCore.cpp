@@ -4,6 +4,7 @@
 #include "../render/physicaldevice/PhysicalDevice.h"
 #include "../render/surface/Surface.h"
 #include "../render/device/Device.h"
+#include "../render/swapchain/SwapChain.h"
 
 SeaRenderCore::SeaRenderCore() = default;
 
@@ -58,6 +59,18 @@ void SeaRenderCore::initialize(GLFWwindow* window)
 
 	{
 		IRenderClass* vulkanObject = deviceInst.get();
+		vulkanObject->create();
+		vulkanClasses.emplace_back(vulkanObject);
+	}
+
+	// ===== 5. SwapChain (Device + PhysicalDevice + Surface + GLFWwindow 의존) =====
+	swapChainInst = std::make_unique<SwapChain>(*deviceInst, *physicalDeviceInst, *surfaceInst, window);
+
+	if (!ENSURE(swapChainInst))
+		throw std::runtime_error("[SeaRenderCore] Cannot make SwapChain");
+
+	{
+		IRenderClass* vulkanObject = swapChainInst.get();
 		vulkanObject->create();
 		vulkanClasses.emplace_back(vulkanObject);
 	}
